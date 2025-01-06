@@ -2,6 +2,7 @@ import { ToastWrapper } from 'keep-react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from "react-router";
 
+import AboutPage from './components/AboutPage/AboutPage.jsx';
 import EditorPage from './components/EditorPage/EditorPage.jsx';
 import ErrorPage from './components/ErrorPage/ErrorPage.jsx';
 import Home from './components/Home/Home.jsx';
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path="/" element={<Layout/>}>
       <Route index element={<Home />} />
       <Route path='/editor' index element={<EditorPage />} />
+      <Route path='/about' index element={<AboutPage />} />
 
 
       <Route path="*" element={<ErrorPage />} />

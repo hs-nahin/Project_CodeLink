@@ -23,7 +23,7 @@ const NavbarComponent = () => {
         <NavbarList>
           <NavbarItem> <Link to='/'>Home</Link> </NavbarItem>
           <NavbarItem><Link to='/editor'>Editor Page</Link></NavbarItem>
-          <NavbarItem><Link to='/About'>About</Link></NavbarItem>
+          <NavbarItem><Link to='/about'>About</Link></NavbarItem>
         </NavbarList>
         <NavbarList>
           <NavbarItem>Sign In</NavbarItem>
