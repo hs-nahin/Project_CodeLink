@@ -1,13 +1,26 @@
 import { ToastWrapper } from 'keep-react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 
-import App from './App.jsx';
+import EditorPage from './components/EditorPage/EditorPage.jsx';
+import ErrorPage from './components/ErrorPage/ErrorPage.jsx';
+import Home from './components/Home/Home.jsx';
+import Layout from './components/Layout/Layout.jsx';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <App />
+
+    <Routes>
+      <Route path="/" element={<Layout/>}>
+      <Route index element={<Home />} />
+      <Route path='/editor' index element={<EditorPage />} />
+
+
+      <Route path="*" element={<ErrorPage />} />
+      </Route>
+    </Routes>
+
     <ToastWrapper
         richColors={true}
         toastOptions={{
@@ -18,5 +31,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         },
       }}
     />
+    
   </BrowserRouter>
 )
