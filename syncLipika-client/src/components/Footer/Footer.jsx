@@ -91,7 +91,7 @@ const Footer = () => {
       </div>
 
       <div className="border-t border-gray-700 mt-8 pt-4 text-center text-sm">
-        &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+        &copy; {new Date().getFullYear()} SyncLipika. All rights reserved.
       </div>
     </footer>
   );

@@ -26,15 +26,11 @@ const NavbarComponent = () => {
           <NavbarItem><Link to='/about'>About</Link></NavbarItem>
         </NavbarList>
         <NavbarList>
-          <NavbarItem>Sign In</NavbarItem>
-          <NavbarItem active={true}>Sign Up</NavbarItem>
+          <NavbarItem className="bg-emerald-500 text-white px-6 py-3 rounded-full hover:bg-emerald-600 hover:text-white transition duration-300 ease-in-out mr-5">Sign In</NavbarItem>
         </NavbarList>
         <NavbarCollapseBtn />
         <NavbarCollapse>
-          <NavbarItem>Projects</NavbarItem>
-          <NavbarItem>Research</NavbarItem>
-          <NavbarItem>Contact</NavbarItem>
-          <NavbarItem>Sign In</NavbarItem>
+          <NavbarItem className='bg-emerald-500 text-white px-6 py-3 rounded-full hover:bg-emerald-600 hover:text-white transition duration-300 ease-in-out'>Sign In</NavbarItem>
           <NavbarItem active={true}>Sign Up</NavbarItem>
         </NavbarCollapse>
       </NavbarContainer>
