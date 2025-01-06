@@ -17,8 +17,8 @@ const NavbarComponent = () => {
     return (
 <Navbar>
       <NavbarContainer>
-        <NavbarBrand>
-          <Image src={KeepLogo} alt="keep" width="88" height="40" />
+        <NavbarBrand className='cursor-pointer'>
+          <Link to='/'><Image src={KeepLogo} alt="keep" width="88" height="40" /></Link>
         </NavbarBrand>
         <NavbarList>
           <NavbarItem> <Link to='/'>Home</Link> </NavbarItem>

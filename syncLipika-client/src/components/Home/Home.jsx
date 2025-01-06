@@ -1,9 +1,10 @@
 import 'react';
+import { EnterRoomCard } from '../EnterRoomCard/EnterRoomCard';
 
 const Home = () => {
     return (
-        <div>
-            <h1 className='text-5xl text-emerald-500 mx-auto'>Home Page</h1>
+        <div className="flex flex-col justify-center items-center min-h-screen py-10">
+            <EnterRoomCard />
         </div>
     );
 };
