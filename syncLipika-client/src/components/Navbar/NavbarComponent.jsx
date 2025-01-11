@@ -22,7 +22,7 @@ const NavbarComponent = () => {
         </NavbarBrand>
         <NavbarList>
           <NavbarItem> <Link to='/'>Home</Link> </NavbarItem>
-          <NavbarItem><Link to='/editor'>Editor Page</Link></NavbarItem>
+          {/* <NavbarItem><Link to='/editor'>Editor Page</Link></NavbarItem> */}
           <NavbarItem><Link to='/about'>About</Link></NavbarItem>
         </NavbarList>
         <NavbarList>

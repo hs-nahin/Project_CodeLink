@@ -16,7 +16,9 @@ import {
 } from 'keep-react';
 import { Envelope, Lock } from 'phosphor-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import io from 'socket.io-client';
+import EditorPage from '../EditorPage/EditorPage';
 
 const socket = io('http://localhost:5000');
 
@@ -24,12 +26,13 @@ export const EnterRoomCard = () => {
   const [joined, setJoined] = useState(false);
   const [roomId, setRoomId] = useState("");
   const [userName, setUserName] = useState("");
-
+  const navigate = useNavigate();
   const joinRoom = (e) => {
     e.preventDefault();
     if (roomId && userName) {
       socket.emit("join", { roomId, userName });
       setJoined(true);
+      navigate('/editor');
     }
   };
   if (!joined) {
@@ -88,5 +91,5 @@ export const EnterRoomCard = () => {
   )
 }
 
-return <div>User Joined</div>;
+return <EditorPage/>;
 };
