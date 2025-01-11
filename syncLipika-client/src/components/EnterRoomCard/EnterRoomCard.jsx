@@ -17,6 +17,9 @@ import {
 import { Envelope, Lock } from 'phosphor-react'
 
 export const EnterRoomCard = () => {
+  const createNewRoom = (e) => {
+    e.preventDefault();
+  }
   return (
     <Card className="max-w-md">
       <CardContent className="space-y-4">
@@ -55,7 +58,7 @@ export const EnterRoomCard = () => {
           <span>Don&apos;t have a room ID?</span>
           <div className="flex ml-1 items-center gap-1">
             <span>Create</span>
-            <Breadcrumb>
+            <Breadcrumb onClick={createNewRoom}>
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbLink href="/" className="text-emerald-600 hover:underline">
