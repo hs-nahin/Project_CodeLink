@@ -1,5 +1,4 @@
 'use client'
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,14 +13,26 @@ import {
   Input,
   InputIcon,
   Label
-} from 'keep-react'
-import { Envelope, Lock } from 'phosphor-react'
+} from 'keep-react';
+import { Envelope, Lock } from 'phosphor-react';
+import { useState } from 'react';
+import io from 'socket.io-client';
 
+const socket = io('http://localhost:5000');
 
 export const EnterRoomCard = () => {
-  const createNewRoom = (e) => {
+  const [joined, setJoined] = useState(false);
+  const [roomId, setRoomId] = useState("");
+  const [userName, setUserName] = useState("");
+
+  const joinRoom = (e) => {
     e.preventDefault();
-  }
+    if (roomId && userName) {
+      socket.emit("join", { roomId, userName });
+      setJoined(true);
+    }
+  };
+  if (!joined) {
   return (
     <Card className="max-w-md">
       <CardContent className="space-y-4">
@@ -34,7 +45,7 @@ export const EnterRoomCard = () => {
           <fieldset className="space-y-2">
             <Label htmlFor="email">SyncSpace ID*</Label>
             <div className="relative">
-              <Input id="email" type="email" placeholder="Enter SyncSpace ID" className="ps-11" />
+              <Input type="text" placeholder="Enter SyncRoom ID" className="ps-11" value={roomId} onChange={(e) => setRoomId(e.target.value)}/>
               <InputIcon>
                 <Envelope size={19} color="#AFBACA" />
               </InputIcon>
@@ -43,14 +54,15 @@ export const EnterRoomCard = () => {
           <fieldset className="space-y-2">
             <Label htmlFor="password">User Name*</Label>
             <div className="relative">
-              <Input id="password" placeholder="Enter username" type="text" className="ps-11" />
+              <Input placeholder="Enter username" type="text" className="ps-11" value={userName} onChange={(e) => setUserName(e.target.value)}/>
               <InputIcon>
                 <Lock size={19} color="#AFBACA" />
               </InputIcon>
             </div>
           </fieldset>
           <Button 
-            type="submit" 
+            type="submit"
+            onClick={joinRoom} 
             className="!mt-4 block w-full ease-in-out duration-300 bg-emerald-500 text-white hover:bg-emerald-600"
           >
             Join Room
@@ -60,7 +72,7 @@ export const EnterRoomCard = () => {
           <span>Don&apos;t have a room ID?</span>
           <div className="flex ml-1 items-center gap-1">
             <span>Create</span>
-            <Breadcrumb onClick={createNewRoom}>
+            <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbLink href="/" className="text-emerald-600 hover:underline">
@@ -75,3 +87,6 @@ export const EnterRoomCard = () => {
     </Card>
   )
 }
+
+return <div>User Joined</div>;
+};
