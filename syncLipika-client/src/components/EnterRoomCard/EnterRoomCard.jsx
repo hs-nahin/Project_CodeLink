@@ -1,4 +1,5 @@
 'use client'
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,6 +16,7 @@ import {
   Label
 } from 'keep-react'
 import { Envelope, Lock } from 'phosphor-react'
+
 
 export const EnterRoomCard = () => {
   const createNewRoom = (e) => {
