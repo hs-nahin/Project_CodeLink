@@ -1,19 +1,13 @@
 'use client';
 
 import { Editor } from '@monaco-editor/react';
-import {
-    Button,
-    Select,
-    SelectAction,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectValue,
-    toast,
-} from 'keep-react';
+import { Button, Select, SelectAction, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectValue, toast } from 'keep-react';
+import { User } from 'phosphor-react';
+import { useState } from 'react';
 
 const EditorPage = () => {
+  const [joinedMembers, setJoinedMembers] = useState(['John Doe']);  // Initial list of users joined
+
   const handleEditorChange = (value, event) => {
     event.preventDefault();
     console.log('Editor value:', value);
@@ -31,6 +25,10 @@ const EditorPage = () => {
     // Redirect or other cleanup actions if needed
   };
 
+  const handleMemberJoin = (member) => {
+    setJoinedMembers((prev) => [...prev, member]);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row h-screen overflow-hidden">
       {/* Sidebar */}
@@ -39,8 +37,7 @@ const EditorPage = () => {
         <p className="mb-2">
           Room ID: <span className="font-semibold">12345</span>
         </p>
-        <p className="mb-2">Users: 5</p>
-        <p className="mb-2">Language: JavaScript</p>
+        <p className="mb-2">Users: {joinedMembers.join(', ')}</p> {/* Displaying who and who joined */}
 
         {/* Language Selector */}
         <div className="mt-4">
@@ -56,6 +53,50 @@ const EditorPage = () => {
                 <SelectItem value="python">Python</SelectItem>
                 <SelectItem value="java">Java</SelectItem>
                 <SelectItem value="cpp">C++</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Member Selector to join */}
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold mb-2">Members in the Room:</h3>
+          <Select>
+            <SelectAction className="w-[20rem]">
+              <div className="flex items-center gap-2.5">
+                <span>
+                  <User className="h-4 w-4" />
+                </span>
+                <SelectValue placeholder="Check team members" />
+              </div>
+            </SelectAction>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Member</SelectLabel>
+                <SelectItem
+                  value="jd"
+                  onClick={() => handleMemberJoin('John Doe')}
+                >
+                  John Doe
+                </SelectItem>
+                <SelectItem
+                  value="am"
+                  onClick={() => handleMemberJoin('Alex Mack')}
+                >
+                  Alex Mack
+                </SelectItem>
+                <SelectItem
+                  value="gb"
+                  onClick={() => handleMemberJoin('Gordon Brown')}
+                >
+                  Gordon Brown
+                </SelectItem>
+                <SelectItem
+                  value="jc"
+                  onClick={() => handleMemberJoin('Jimmie Crawford')}
+                >
+                  Jimmie Crawford
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
