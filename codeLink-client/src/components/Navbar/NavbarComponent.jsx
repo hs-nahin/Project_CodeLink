@@ -10,6 +10,7 @@ import {
 import 'react';
 import { Link } from 'react-router';
 import KeepLogo from "../../assets/logo.png";
+import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher.jsx';
 
 
 const NavbarComponent = () => {
@@ -27,6 +28,7 @@ const NavbarComponent = () => {
           {/* <NavbarItem><Link to='/editor'>Editor Page</Link></NavbarItem> */}
           <NavbarItem><Link to='/about'>About</Link></NavbarItem>
         </NavbarList>
+        <ThemeSwitcher/>
         <NavbarList>
           <NavbarItem className="bg-emerald-500 text-white px-6 py-3 rounded-md hover:bg-emerald-600 hover:text-white transition duration-300 ease-in-out mr-5">New Room</NavbarItem>
         </NavbarList>
