@@ -7,13 +7,12 @@ import EditorPage from "./components/EditorPage/EditorPage.jsx";
 import ErrorPage from "./components/ErrorPage/ErrorPage.jsx";
 import Home from "./components/Home/Home.jsx";
 import Layout from "./components/Layout/Layout.jsx";
-import { ThemeProvider } from "./components/ThemeProvider/ThemeProvider.jsx";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      {/* <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme"> */}
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
@@ -33,7 +32,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             },
           }}
         />
-      </ThemeProvider>
+      {/* </ThemeProvider> */}
     </BrowserRouter>
   </StrictMode>
 );

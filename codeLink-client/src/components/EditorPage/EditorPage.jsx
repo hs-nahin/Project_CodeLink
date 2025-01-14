@@ -6,7 +6,8 @@ import { User } from 'phosphor-react';
 import { useState } from 'react';
 
 const EditorPage = () => {
-  const [joinedMembers, setJoinedMembers] = useState(['John Doe']);  // Initial list of users joined
+  const [joinedMembers, setJoinedMembers] = useState(['John Doe']); // Initial list of users joined
+  const [isDarkMode, setIsDarkMode] = useState(false); // Toggle state for dark mode
 
   const handleEditorChange = (value, event) => {
     event.preventDefault();
@@ -29,15 +30,54 @@ const EditorPage = () => {
     setJoinedMembers((prev) => [...prev, member]);
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode((prevMode) => !prevMode);
+  };
+
   return (
-    <div className="flex flex-col lg:flex-row h-screen overflow-hidden">
+    <div
+      className={`flex flex-col lg:flex-row h-screen overflow-hidden ${
+        isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'
+      }`}
+    >
       {/* Sidebar */}
-      <div className="lg:w-1/4 w-full p-4 bg-gray-100 border-b lg:border-r lg:border-b-0 border-gray-300 lg:h-screen overflow-auto">
+      <div
+        className={`lg:w-1/4 w-full p-4 border-b lg:border-r lg:border-b-0 border-gray-300 lg:h-screen overflow-auto ${
+          isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-100 border-gray-300'
+        }`}
+      >
         <h2 className="text-xl font-bold mb-4">Code Room Info</h2>
         <p className="mb-2">
           Room ID: <span className="font-semibold">12345</span>
         </p>
         <p className="mb-2">User: {joinedMembers.join(', ')}</p> {/* Displaying who and who joined */}
+
+        {/* Dark Mode Toggle */}
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold mb-2">Theme</h3>
+          <div className="flex items-center gap-4">
+            <span>Light</span>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only"
+                checked={isDarkMode}
+                onChange={toggleDarkMode}
+              />
+              <div
+                className={`w-11 h-6 bg-gray-200 rounded-full dark:bg-gray-700 transition-colors ${
+                  isDarkMode ? 'bg-blue-600' : 'bg-gray-200'
+                }`}
+              ></div>
+              <span
+                className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
+                  isDarkMode ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              ></span>
+            </label>
+            <span>Dark</span>
+          </div>
+        </div>
 
         {/* Language Selector */}
         <div className="mt-4">
@@ -119,6 +159,7 @@ const EditorPage = () => {
           height="100%"
           language="javascript" // Default language
           defaultValue="// start coding here"
+          theme={isDarkMode ? 'vs-dark' : 'light'}
           onChange={handleEditorChange}
           options={{
             minimap: { enabled: false },
