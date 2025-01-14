@@ -1,27 +1,36 @@
 'use client';
 
 import { Editor } from '@monaco-editor/react';
-import { Button, Select, SelectAction, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectValue, toast } from 'keep-react';
+import {
+  Button,
+  Select,
+  SelectAction,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectValue,
+  toast,
+} from 'keep-react';
 import { User } from 'phosphor-react';
 import { useState } from 'react';
 
 const EditorPage = () => {
-  const [joinedMembers, setJoinedMembers] = useState(['John Doe']); // Initial list of users joined
+  const [joinedMembers, setJoinedMembers] = useState(['']);
   const [isDarkMode, setIsDarkMode] = useState(false); // Toggle state for dark mode
+  const [editorLanguage, setEditorLanguage] = useState('javascript'); // State for Monaco editor language
 
-  const handleEditorChange = (value, event) => {
-    event.preventDefault();
+  const handleEditorChange = (value) => {
     console.log('Editor value:', value);
     // Handle code changes if needed
   };
 
   const handleLanguageChange = (language) => {
     console.log('Selected Language:', language);
-    // Optionally handle language change
+    setEditorLanguage(language); // Update the editor language state
   };
 
   const handleLeaveRoom = () => {
-    // Logic for leaving the room
     toast.error('You have successfully left the room!');
     // Redirect or other cleanup actions if needed
   };
@@ -50,7 +59,7 @@ const EditorPage = () => {
         <p className="mb-2">
           Room ID: <span className="font-semibold">12345</span>
         </p>
-        <p className="mb-2">User: {joinedMembers.join(', ')}</p> {/* Displaying who and who joined */}
+        <p className="mb-2">User: {joinedMembers.join(', ')}</p>
 
         {/* Dark Mode Toggle */}
         <div className="mt-4">
@@ -98,7 +107,7 @@ const EditorPage = () => {
           </Select>
         </div>
 
-        {/* Member Selector to join */}
+        {/* Member Selector */}
         <div className="mt-4">
           <h3 className="text-lg font-semibold mb-2">Members in the Room:</h3>
           <Select>
@@ -157,7 +166,7 @@ const EditorPage = () => {
       <div className="lg:w-3/4 w-full p-4 flex-1 lg:h-screen overflow-auto">
         <Editor
           height="100%"
-          language="javascript" // Default language
+          language={editorLanguage} // Use the state for language
           defaultValue="// start coding here"
           theme={isDarkMode ? 'vs-dark' : 'light'}
           onChange={handleEditorChange}
