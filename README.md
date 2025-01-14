@@ -1,4 +1,4 @@
-# **SyncLipika**
+# **CodeLink**
 
 ### **Tagline:** Seamless Collaboration, Real-Time Creation
 
@@ -6,7 +6,7 @@
 
 ## **Project Description**
 
-**SyncLipika (সিঙ্কলিপিকা)** is a real-time collaborative code editor built using **React.js**, **Node.js**, and **WebSockets**. The platform empowers users to collaborate on code in real time, enabling seamless synchronization and boosting productivity for developers, educators, and students. The name "Lipika," meaning "script" in Bengali, reflects its goal of fostering effortless collaboration and creative teamwork.
+**CodeLink** is a real-time collaborative code editor built using **React.js**, **Node.js**, and **WebSockets**. The platform empowers users to collaborate on code in real time, enabling seamless synchronization and boosting productivity for developers, educators, and students. The name "CodeLink" reflects its goal of fostering effortless collaboration and creative teamwork.
 
 ---
 
@@ -39,7 +39,7 @@
 
 ## **Setup and Installation**
 
-Follow these steps to set up SyncLipika locally:
+Follow these steps to set up CodeLink locally:
 
 ### **Prerequisites**
 
@@ -51,8 +51,8 @@ Follow these steps to set up SyncLipika locally:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/Synclipika.git
-   cd Synclipika
+   git clone https://github.com/your-username/CodeLink.git
+   cd CodeLink
    ```
 
 2. **Install dependencies:**
@@ -95,7 +95,7 @@ Follow these steps to set up SyncLipika locally:
 ## **Folder Structure**
 
 ```
-SyncLipika/
+CodeLink/
 ├── client/         # Frontend React application
 │   ├── src/
 │   ├── public/
