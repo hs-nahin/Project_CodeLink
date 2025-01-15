@@ -16,15 +16,14 @@ import {
 } from "keep-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import io from "socket.io-client";
 import { v4 as uuidV4 } from 'uuid';
 import EditorPage from "../EditorPage/EditorPage";
 
 
-const socket = io("http://localhost:5000");
+
 
 export const EnterRoomCard = () => {
-  const [joined, setJoined] = useState(false);
+  const joined = useState(false);
   const [roomId, setRoomId] = useState("");
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
@@ -32,11 +31,16 @@ export const EnterRoomCard = () => {
   // Join Room Function
   const joinRoom = (e) => {
     e.preventDefault();
-    if (roomId && userName) {
-      socket.emit("join", { roomId, userName });
-      setJoined(true);
-      navigate("/editor");
+    if (!roomId || !userName) {
+      toast.error('Room ID and username are required to create the room.');
+      return;
     }
+    // Redirect
+    navigate(`/editor/${roomId}`, {
+      state: {
+        userName,
+      }
+    })
   };
   // New Room ID Generator Function
   const createNewRoomId = (e) => {
@@ -46,6 +50,8 @@ export const EnterRoomCard = () => {
     console.log(id);
     toast.success('Successfully created a new room ID! 🎉')
   }
+
+  
   if (!joined) {
     return (
       <Card className="max-w-lg sm:w-full">
