@@ -23,7 +23,7 @@ import EditorPage from "../EditorPage/EditorPage";
 
 
 export const EnterRoomCard = () => {
-  const joined = useState(false);
+  const [joined] = useState(false);
   const [roomId, setRoomId] = useState("");
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
