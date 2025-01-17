@@ -12,7 +12,7 @@ const AboutPage = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Title */}
-      <h1 className="text-3xl font-bold text-center mb-6">About SyncLipika</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">About CodeLink</h1>
 
       {/* Accordion for content */}
       <Accordion flush={true} type="single" collapsible>
