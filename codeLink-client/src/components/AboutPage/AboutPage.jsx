@@ -42,7 +42,7 @@ const AboutPage = () => {
           </AccordionAction>
           <AccordionContent>
             <p className="text-lg leading-relaxed text-gray-700">
-              Our mission is to empower developers, educators, and students by providing a tool that promotes real-time collaboration and learning. SyncLipika helps streamline coding workflows, supports group projects, and allows educators to conduct coding lessons and pair programming exercises more effectively. It’s a platform where creativity, learning, and teamwork come together.
+              Our mission is to empower developers, educators, and students by providing a tool that promotes real-time collaboration and learning. CodeLink helps streamline coding workflows, supports group projects, and allows educators to conduct coding lessons and pair programming exercises more effectively. It’s a platform where creativity, learning, and teamwork come together.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -145,6 +145,7 @@ const AboutPage = () => {
         </AccordionItem>
 
       </Accordion>
+      
     </div>
   );
 };
