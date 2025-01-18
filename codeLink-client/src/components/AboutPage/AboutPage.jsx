@@ -27,7 +27,7 @@ const AboutPage = () => {
           </AccordionAction>
           <AccordionContent>
             <p className="text-lg leading-relaxed text-gray-700">
-              SyncLipika is an innovative, real-time collaborative code editor designed to make coding projects more efficient and interactive for teams. Built using modern technologies like <strong>React.js</strong>, <strong>Node.js</strong>, and <strong>WebSockets</strong>, the platform enables seamless, instant synchronization of code changes among all participants, ensuring that everyone is always on the same page.
+              CodeLink is an innovative, real-time collaborative code editor designed to make coding projects more efficient and interactive for teams. Built using modern technologies like <strong>React.js</strong>, <strong>Node.js</strong>, and <strong>WebSockets</strong>, the platform enables seamless, instant synchronization of code changes among all participants, ensuring that everyone is always on the same page.
             </p>
           </AccordionContent>
         </AccordionItem>
