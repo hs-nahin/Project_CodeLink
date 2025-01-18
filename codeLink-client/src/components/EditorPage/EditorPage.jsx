@@ -11,10 +11,26 @@ import {
   toast,
 } from "keep-react";
 import { User } from "phosphor-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
+// import { useLocation } from "react-router";
+// import ACTIONS from "../../Actions/Actions";
+import { initSocket } from "../../Socket/socket";
 
 const EditorPage = () => {
+  const socketRef = useRef(null);
+  // const location = useLocation();
+  useEffect(() => {
+    const init = async () => {
+      socketRef.current = await initSocket();
+      // socketRef.current.emit(ACTIONS.JOIN, {
+      //   roomId,
+      //   username: location.state?.username,
+      // });
+    };
+    init();
+  }, []);
+  
   const [clients, setClients] = useState([
     { socketId: 1, username: "Nahin" },
     { socketId: 1, username: "Mim" },
