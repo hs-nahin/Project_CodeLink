@@ -13,32 +13,54 @@ import {
 import { User } from "phosphor-react";
 import { useEffect, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-// import { useLocation } from "react-router";
-// import ACTIONS from "../../Actions/Actions";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router";
+import ACTIONS from "../../Actions/Actions";
 import { initSocket } from "../../Socket/socket";
 
 const EditorPage = () => {
   const socketRef = useRef(null);
-  // const location = useLocation();
+  const location = useLocation();
+  const { roomId } = useParams();
+  
+  const reactNavigator = useNavigate();
+
   useEffect(() => {
     const init = async () => {
       socketRef.current = await initSocket();
-      // socketRef.current.emit(ACTIONS.JOIN, {
-      //   roomId,
-      //   username: location.state?.username,
-      // });
+      socketRef.current.on("connect_error", (err) => {
+        handleError(err);
+      });
+      socketRef.current.on("connect_failed", (err) => {
+        handleError(err);
+      });
+
+      function handleError(err) {
+        console.error("Socket connection failed:", err);
+        toast.error("Failed to connect to the server. Please try again later.");
+        reactNavigator("/"); // Redirect to the home page
+      }
+
+      socketRef.current.emit(ACTIONS.JOIN, {
+        roomId,
+        username: location.state?.username,
+      });
     };
     init();
   }, []);
-  
+
   const [clients, setClients] = useState([
     { socketId: 1, username: "Nahin" },
     { socketId: 1, username: "Mim" },
     { socketId: 1, username: "Nusrat" },
   ]);
+
   const [isDarkMode, setIsDarkMode] = useState(false);
+
   const [editorLanguage, setEditorLanguage] = useState("javascript");
-  const roomId = "12345"; // Hardcoded Room ID
+  if (!location.state) {
+    return <Navigate to="/" />;
+  }
+  // const roomId = "12345"; // Hardcoded Room ID
 
   const handleEditorChange = (value) => {
     console.log("Editor value:", value);
