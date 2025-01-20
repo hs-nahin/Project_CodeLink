@@ -16,13 +16,14 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import ACTIONS from "../../Actions/Actions";
 import { initSocket } from "../../Socket/socket";
+const { username } = location.state || {};
 
 const EditorPage = () => {
   const socketRef = useRef(null);
   const location = useLocation();
   const { roomId } = useParams();
-  
   const reactNavigator = useNavigate();
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
     const init = async () => {
@@ -33,26 +34,31 @@ const EditorPage = () => {
       socketRef.current.on("connect_failed", (err) => {
         handleError(err);
       });
-
+  
       function handleError(err) {
         console.error("Socket connection failed:", err);
         toast.error("Failed to connect to the server. Please try again later.");
         reactNavigator("/"); // Redirect to the home page
       }
-
+  
       socketRef.current.emit(ACTIONS.JOIN, {
         roomId,
-        username: location.state?.username,
+        username: username,  // Here we use the username safely
       });
+
+      // Listening for the joined event
+      socketRef.current.on(ACTIONS.JOINED, ({clients, username, socketId}) => {
+        if (username !== location.state.username) {
+          toast.success(`${username} has joined the room!`);
+          console.log(`${username} has joined the room!`);  
+          setClients(clients);
+        }
+      })
     };
     init();
-  }, []);
+  }, [location.state, reactNavigator, roomId]);
+  
 
-  const [clients, setClients] = useState([
-    { socketId: 1, username: "Nahin" },
-    { socketId: 1, username: "Mim" },
-    { socketId: 1, username: "Nusrat" },
-  ]);
 
   const [isDarkMode, setIsDarkMode] = useState(false);
 
