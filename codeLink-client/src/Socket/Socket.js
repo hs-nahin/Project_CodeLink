@@ -1,13 +1,15 @@
 import { io } from 'socket.io-client';
 
 export const initSocket = async () => {
-    const options = {
-        'force new connection': true,
-        reconnectionAttempts: 'Infinity',
-        timeout: 10000,
-        transports: ['websocket'],
-    };
+    const backendURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  console.log("Connecting to:", backendURL); // Debugging
+  
+  const option = {
+    'force new connection': true,
+    reconnectionAttempts: 'Infinity',
+    timeout: 10000,
+    transports: ['websocket'],
+  };
 
-    console.log("Backend URL:", process.env.REACT_APP_BACKEND_URL);
-    return io(process.env.REACT_APP_BACKEND_URL, options);
+  return io(backendURL, option);
 };
