@@ -29,44 +29,59 @@ const EditorPage = () => {
     toast.error("Username is required to join the room!");
     reactNavigator("/"); // Redirect to home if missing
   }
-  
 
   useEffect(() => {
     const init = async () => {
       socketRef.current = await initSocket();
-      socketRef.current.on("connect_error", (err) => {
-        handleError(err);
-      });
-      socketRef.current.on("connect_failed", (err) => {
-        handleError(err);
-      });
-  
+
+      // Handling connection errors
+      socketRef.current.on("connect_error", handleError);
+      socketRef.current.on("connect_failed", handleError);
+
       function handleError(err) {
         console.error("Socket connection failed:", err);
         toast.error("Failed to connect to the server. Please try again later.");
         reactNavigator("/"); // Redirect to the home page
       }
-  
+
+      // Emit JOIN action
       socketRef.current.emit(ACTIONS.JOIN, {
         roomId,
         userName: userName || "Anonymous", // Fallback for undefined userName
       });
-      
-      
 
-      // Listening for the joined event
-      socketRef.current.on(ACTIONS.JOINED, ({ clients, userName, socketId }) => {
-        if (userName && userName !== location.state.userName) {
+      // Listening for the JOINED event
+      socketRef.current.on(ACTIONS.JOINED, ({ clients, userName }) => {
+        console.log("Clients updated:", clients); // Log clients array
+        if (userName && userName === location.state.userName) {
           toast.success(`${userName} has joined the room!`);
-          console.log(`${userName} has joined the room!`);
         }
-        setClients(clients); // Always update the clients
+        // Filter out duplicate clients based on username
+        setClients(() =>
+          clients.filter(
+            (client, index, self) =>
+              index === self.findIndex((c) => c.username === client.username)
+          )
+        );
       });
-      
+
+      // Listening for the DISCONNECTED event
+      socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, userName }) => {
+        toast.error(`${userName} has left the room!`);
+        setClients((prevClients) =>
+          prevClients.filter((client) => client.socketId !== socketId)
+        );
+      });
     };
     init();
+
+    return () => {
+      // Cleanup on component unmount
+      socketRef.current?.disconnect();
+      socketRef.current = null;
+    };
   }, [location.state, reactNavigator, roomId, userName]);
-  
+
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [editorLanguage, setEditorLanguage] = useState("javascript");
 
@@ -184,8 +199,8 @@ const EditorPage = () => {
               <SelectGroup>
                 <SelectLabel>Member</SelectLabel>
                 {clients.map((client, index) => (
-                  <SelectItem key={index} value={client.userName}>
-                    {client.userName}
+                  <SelectItem key={index} value={client.username || "Anonymous"}>
+                    {client.username || "Anonymous"}
                   </SelectItem>
                 ))}
               </SelectGroup>

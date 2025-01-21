@@ -37,12 +37,23 @@ io.on("connection", (socket) => {
         clients.forEach(({ socketId }) => {
             io.to(socketId).emit(ACTIONS.JOINED, {
                 clients,
-                username, // Send username
+                userName, // Send username
                 socketId: socket.id,
             });
         });
     });
-    
+
+    socket.on('disconnecting', () => {
+        const rooms = [...socket.rooms];
+        rooms.forEach((roomId) => {
+            socket.in(roomId).emit(ACTIONS.DISCONNECTED, {
+                socketId: socket.id,
+                userName: userSocketMap[socket.id],
+            })
+        })
+        userSocketMap[socket.id];
+        socket.leave();
+    });
 });
 
 const PORT = process.env.PORT || 5000;
