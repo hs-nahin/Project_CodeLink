@@ -28,19 +28,21 @@ const getAllConnectedClients = (roomId) => {
 io.on("connection", (socket) => {
     console.log("Socket connected", socket.id);
 
-    socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
+    socket.on(ACTIONS.JOIN, ({ roomId, userName }) => { // Change to userName
+        const username = userName; // Map userName to username for consistency
         userSocketMap[socket.id] = username;
         socket.join(roomId);
         const clients = getAllConnectedClients(roomId);
         console.log("Clients in the room:", clients);
-        clients.forEach( ({socketId})=>{
+        clients.forEach(({ socketId }) => {
             io.to(socketId).emit(ACTIONS.JOINED, {
                 clients,
-                username,
+                username, // Send username
                 socketId: socket.id,
-            })
-        })
+            });
+        });
     });
+    
 });
 
 const PORT = process.env.PORT || 5000;

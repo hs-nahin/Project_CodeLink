@@ -16,7 +16,6 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import ACTIONS from "../../Actions/Actions";
 import { initSocket } from "../../Socket/socket";
-const { username } = location.state || {};
 
 const EditorPage = () => {
   const socketRef = useRef(null);
@@ -24,6 +23,13 @@ const EditorPage = () => {
   const { roomId } = useParams();
   const reactNavigator = useNavigate();
   const [clients, setClients] = useState([]);
+  const { userName } = location.state || { userName: "Anonymous" };
+
+  if (!userName) {
+    toast.error("Username is required to join the room!");
+    reactNavigator("/"); // Redirect to home if missing
+  }
+  
 
   useEffect(() => {
     const init = async () => {
@@ -43,30 +49,30 @@ const EditorPage = () => {
   
       socketRef.current.emit(ACTIONS.JOIN, {
         roomId,
-        username: username,  // Here we use the username safely
+        userName: userName || "Anonymous", // Fallback for undefined userName
       });
+      
+      
 
       // Listening for the joined event
-      socketRef.current.on(ACTIONS.JOINED, ({clients, username, socketId}) => {
-        if (username !== location.state.username) {
-          toast.success(`${username} has joined the room!`);
-          console.log(`${username} has joined the room!`);  
-          setClients(clients);
+      socketRef.current.on(ACTIONS.JOINED, ({ clients, userName, socketId }) => {
+        if (userName && userName !== location.state.userName) {
+          toast.success(`${userName} has joined the room!`);
+          console.log(`${userName} has joined the room!`);
         }
-      })
+        setClients(clients); // Always update the clients
+      });
+      
     };
     init();
-  }, [location.state, reactNavigator, roomId]);
+  }, [location.state, reactNavigator, roomId, userName]);
   
-
-
   const [isDarkMode, setIsDarkMode] = useState(false);
-
   const [editorLanguage, setEditorLanguage] = useState("javascript");
+
   if (!location.state) {
     return <Navigate to="/" />;
   }
-  // const roomId = "12345"; // Hardcoded Room ID
 
   const handleEditorChange = (value) => {
     console.log("Editor value:", value);
@@ -178,8 +184,8 @@ const EditorPage = () => {
               <SelectGroup>
                 <SelectLabel>Member</SelectLabel>
                 {clients.map((client, index) => (
-                  <SelectItem key={index} value={client.username}>
-                    {client.username}
+                  <SelectItem key={index} value={client.userName}>
+                    {client.userName}
                   </SelectItem>
                 ))}
               </SelectGroup>

@@ -38,10 +38,12 @@ export const EnterRoomCard = () => {
     // Redirect
     navigate(`/editor/${roomId}`, {
       state: {
-        userName,
-      }
-    })
-  };
+        userName: userName.trim(), // Ensure userName is non-empty and trimmed
+      },
+      });
+    };
+    
+    
   // New Room ID Generator Function
   const createNewRoomId = (e) => {
     e.preventDefault();
