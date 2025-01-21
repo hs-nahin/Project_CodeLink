@@ -31,41 +31,37 @@ const EditorPage = () => {
   }
 
   useEffect(() => {
+    // Initialize socket connection and setup event listeners
     const init = async () => {
+      // Establish socket connection
       socketRef.current = await initSocket();
-
-      // Handling connection errors
+  
+      // Handle connection errors
       socketRef.current.on("connect_error", handleError);
       socketRef.current.on("connect_failed", handleError);
-
+  
       function handleError(err) {
         console.error("Socket connection failed:", err);
         toast.error("Failed to connect to the server. Please try again later.");
-        reactNavigator("/"); // Redirect to the home page
+        reactNavigator("/"); // Redirect to home page on error
       }
-
-      // Emit JOIN action
+  
+      // Emit JOIN event with room details
       socketRef.current.emit(ACTIONS.JOIN, {
         roomId,
-        userName: userName || "Anonymous", // Fallback for undefined userName
+        userName: userName || "Anonymous",
       });
-
-      // Listening for the JOINED event
+  
+      // Handle successful JOIN event
       socketRef.current.on(ACTIONS.JOINED, ({ clients, userName }) => {
-        console.log("Clients updated:", clients); // Log clients array
+        console.log("Clients updated:", clients);
         if (userName && userName === location.state.userName) {
           toast.success(`${userName} has joined the room!`);
         }
-        // Filter out duplicate clients based on username
-        setClients(() =>
-          clients.filter(
-            (client, index, self) =>
-              index === self.findIndex((c) => c.username === client.username)
-          )
-        );
+        setClients(clients); // Update clients list
       });
-
-      // Listening for the DISCONNECTED event
+  
+      // Handle user disconnection
       socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, userName }) => {
         toast.error(`${userName} has left the room!`);
         setClients((prevClients) =>
@@ -73,14 +69,17 @@ const EditorPage = () => {
         );
       });
     };
+  
     init();
-
+  
+    // Cleanup on component unmount
     return () => {
-      // Cleanup on component unmount
-      socketRef.current?.disconnect();
-      socketRef.current = null;
+      socketRef.current?.disconnect(); // Disconnect socket
+      socketRef.current.off(ACTIONS.JOINED); // Remove JOINED listener
+      socketRef.current.off(ACTIONS.DISCONNECTED); // Remove DISCONNECTED listener
     };
   }, [location.state, reactNavigator, roomId, userName]);
+  
 
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [editorLanguage, setEditorLanguage] = useState("javascript");
