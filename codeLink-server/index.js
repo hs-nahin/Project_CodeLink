@@ -1,8 +1,7 @@
-// index.js
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-import ACTIONS from "../codeLink-client/src/Actions/Actions.js"; // Import with ES Modules
+import * as ACTIONS from "../codeLink-client/src/Actions/Actions.js"; // Import with ES Modules
 
 const app = express();
 const server = http.createServer(app);
@@ -13,46 +12,65 @@ const io = new Server(server, {
     },
 });
 
-
 const userSocketMap = {};
+
+// Utility function to get all connected clients in a room
 const getAllConnectedClients = (roomId) => {
-    const clients = io.sockets.adapter.rooms.get(roomId) || new Set();
-    return Array.from(clients).map((socketId) => {
-        return {
-            socketId,
-            username: userSocketMap[socketId],
-        };
-    });
+    return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
+        (socketId) => {
+            return {
+                socketId,
+                username: userSocketMap[socketId],
+            };
+        }
+    );
 };
 
 io.on("connection", (socket) => {
-    console.log("Socket connected", socket.id);
+    console.log("Socket connected:", socket.id);
 
-    socket.on(ACTIONS.JOIN, ({ roomId, userName }) => { // Change to userName
-        const username = userName; // Map userName to username for consistency
-        userSocketMap[socket.id] = username;
+    // Handle user joining a room
+    socket.on(ACTIONS.JOIN, ({ roomId, userName }) => {
+        userSocketMap[socket.id] = userName;
         socket.join(roomId);
+
         const clients = getAllConnectedClients(roomId);
-        console.log("Clients in the room:", clients);
+
+        // Notify all clients in the room about the new user
         clients.forEach(({ socketId }) => {
             io.to(socketId).emit(ACTIONS.JOINED, {
                 clients,
-                userName, // Send username
+                userName,
                 socketId: socket.id,
             });
         });
     });
 
-    socket.on('disconnecting', () => {
+    // Handle real-time code changes
+    socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => {
+        socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code }); // Broadcast the code to all except the sender
+    });
+
+    // Handle code synchronization for a specific client
+    socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
+        io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code }); // Send the current code to the specified client
+    });
+
+    // Handle user disconnecting
+    socket.on("disconnecting", () => {
         const rooms = [...socket.rooms];
         rooms.forEach((roomId) => {
             socket.in(roomId).emit(ACTIONS.DISCONNECTED, {
                 socketId: socket.id,
                 userName: userSocketMap[socket.id],
-            })
-        })
-        userSocketMap[socket.id];
-        socket.leave();
+            });
+        });
+        delete userSocketMap[socket.id];
+    });
+
+    // Clean up after disconnection
+    socket.on("disconnect", () => {
+        console.log("Socket disconnected:", socket.id);
     });
 });
 

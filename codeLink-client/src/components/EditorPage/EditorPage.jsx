@@ -1,21 +1,10 @@
 import { Editor } from "@monaco-editor/react";
-import {
-  Button,
-  Select,
-  SelectAction,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectValue,
-  toast,
-} from "keep-react";
+import { Button, Select, SelectAction, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectValue, toast } from "keep-react";
 import { User } from "phosphor-react";
 import { useEffect, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import ACTIONS from "../../Actions/Actions";
-import { initSocket } from "../../Socket/socket";
 
 const EditorPage = () => {
   const socketRef = useRef(null);
@@ -24,6 +13,7 @@ const EditorPage = () => {
   const reactNavigator = useNavigate();
   const [clients, setClients] = useState([]);
   const { userName } = location.state || { userName: "Anonymous" };
+  const editorRef = useRef(null);
 
   if (!userName) {
     toast.error("Username is required to join the room!");
@@ -31,55 +21,82 @@ const EditorPage = () => {
   }
 
   useEffect(() => {
-    // Initialize socket connection and setup event listeners
-    const init = async () => {
-      // Establish socket connection
-      socketRef.current = await initSocket();
-  
-      // Handle connection errors
-      socketRef.current.on("connect_error", handleError);
-      socketRef.current.on("connect_failed", handleError);
-  
-      function handleError(err) {
-        console.error("Socket connection failed:", err);
-        toast.error("Failed to connect to the server. Please try again later.");
-        reactNavigator("/"); // Redirect to home page on error
-      }
-  
-      // Emit JOIN event with room details
-      socketRef.current.emit(ACTIONS.JOIN, {
-        roomId,
-        userName: userName || "Anonymous",
-      });
-  
-      // Handle successful JOIN event
-      socketRef.current.on(ACTIONS.JOINED, ({ clients, userName }) => {
-        console.log("Clients updated:", clients);
-        if (userName && userName === location.state.userName) {
-          toast.success(`${userName} has joined the room!`);
+    const initSocket = async () => {
+      try {
+        socketRef.current = await initSocket();
+        socketRef.current.on("connect_error", handleError);
+        socketRef.current.on("connect_failed", handleError);
+        
+        function handleError(err) {
+          console.error("Socket connection failed:", err);
+          toast.error("Failed to connect to the server. Please try again later.");
+          reactNavigator("/");
         }
-        setClients(clients); // Update clients list
-      });
+        
+        socketRef.current.emit(ACTIONS.JOIN, {
+          roomId,
+          userName: userName || "Anonymous",
+        });
+        
+        socketRef.current.on(ACTIONS.JOINED, ({ clients, userName }) => {
+          console.log("Clients updated:", clients);
+          if (userName && userName === location.state.userName) {
+            toast.success(`${userName} has joined the room!`);
+          }
+          setClients(clients);
+        });
   
-      // Handle user disconnection
-      socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, userName }) => {
-        toast.error(`${userName} has left the room!`);
-        setClients((prevClients) =>
-          prevClients.filter((client) => client.socketId !== socketId)
-        );
-      });
+        socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, userName }) => {
+          toast.error(`${userName} has left the room!`);
+          setClients((prevClients) => prevClients.filter((client) => client.socketId !== socketId));
+        });
+        
+        socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
+          if (editorRef.current) {
+            const currentValue = editorRef.current.getValue();
+            if (currentValue !== code) {
+              editorRef.current.setValue(code);
+            }
+          }
+        });
+        
+      } catch (err) {
+        console.error("Initialization error:", err);
+        toast.error("An error occurred during socket initialization.");
+      }
     };
-  
-    init();
-  
-    // Cleanup on component unmount
+    initSocket();
+    
     return () => {
-      socketRef.current?.disconnect(); // Disconnect socket
-      socketRef.current.off(ACTIONS.JOINED); // Remove JOINED listener
-      socketRef.current.off(ACTIONS.DISCONNECTED); // Remove DISCONNECTED listener
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current.off(ACTIONS.JOINED);
+        socketRef.current.off(ACTIONS.DISCONNECTED);
+        socketRef.current.off(ACTIONS.CODE_CHANGE);
+      }
     };
   }, [location.state, reactNavigator, roomId, userName]);
   
+
+  useEffect(() => {
+    if (socketRef.current) {
+        socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
+            if (editorRef.current) {
+                const currentValue = editorRef.current.getValue();
+                if (currentValue !== code) {
+                    editorRef.current.setValue(code);
+                }
+            }
+        });
+    }
+    return () => {
+        if (socketRef.current) {
+            socketRef.current.off(ACTIONS.CODE_CHANGE);
+        }
+    };
+}, []);
+
+
 
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [editorLanguage, setEditorLanguage] = useState("javascript");
@@ -90,6 +107,10 @@ const EditorPage = () => {
 
   const handleEditorChange = (value) => {
     console.log("Editor value:", value);
+    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+      roomId,
+      code: value,
+    });
   };
 
   const handleLanguageChange = (language) => {
@@ -107,17 +128,11 @@ const EditorPage = () => {
 
   return (
     <div
-      className={`flex flex-col lg:flex-row h-screen overflow-hidden ${
-        isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"
-      }`}
+      className={`flex flex-col lg:flex-row h-screen overflow-hidden ${isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"}`}
     >
       {/* Sidebar */}
       <div
-        className={`lg:w-1/4 w-full p-4 border-b lg:border-r lg:border-b-0 border-gray-300 lg:h-screen overflow-auto ${
-          isDarkMode
-            ? "bg-gray-800 border-gray-700"
-            : "bg-gray-100 border-gray-300"
-        }`}
+        className={`lg:w-1/4 w-full p-4 border-b lg:border-r lg:border-b-0 border-gray-300 lg:h-screen overflow-auto ${isDarkMode ? "bg-gray-800 border-gray-700" : "bg-gray-100 border-gray-300"}`}
       >
         <h2 className="text-xl font-bold mb-4">Code Room Info</h2>
         <p className="mb-2">
@@ -149,14 +164,10 @@ const EditorPage = () => {
                 onChange={toggleDarkMode}
               />
               <div
-                className={`w-11 h-6 bg-gray-200 rounded-full transition-colors ${
-                  isDarkMode ? "bg-blue-600" : "bg-gray-200"
-                }`}
+                className={`w-11 h-6 bg-gray-200 rounded-full transition-colors ${isDarkMode ? "bg-blue-600" : "bg-gray-200"}`}
               ></div>
               <span
-                className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
-                  isDarkMode ? "translate-x-6" : "translate-x-1"
-                }`}
+                className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${isDarkMode ? "translate-x-6" : "translate-x-1"}`}
               ></span>
             </label>
             <span>Dark</span>
@@ -225,11 +236,10 @@ const EditorPage = () => {
           language={editorLanguage}
           defaultValue="// start coding here"
           theme={isDarkMode ? "vs-dark" : "light"}
-          onChange={handleEditorChange}
-          options={{
-            minimap: { enabled: false },
-            fontSize: 14,
+          onMount={(editor) => {
+            editorRef.current = editor;
           }}
+          onChange={handleEditorChange}
         />
       </div>
     </div>
