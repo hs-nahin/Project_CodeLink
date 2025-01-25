@@ -1,4 +1,14 @@
-import { Button, Select, SelectAction, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectValue, toast } from "keep-react";
+import {
+  Button,
+  Select,
+  SelectAction,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectValue,
+  toast,
+} from "keep-react";
 import { User } from "phosphor-react";
 import { useEffect, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -28,18 +38,20 @@ const EditorPage = () => {
         socketRef.current = await initSocket();
         socketRef.current.on("connect_error", handleError);
         socketRef.current.on("connect_failed", handleError);
-        
+
         function handleError(err) {
           console.error("Socket connection failed:", err);
-          toast.error("Failed to connect to the server. Please try again later.");
+          toast.error(
+            "Failed to connect to the server. Please try again later."
+          );
           reactNavigator("/");
         }
-        
+
         socketRef.current.emit(ACTIONS.JOIN, {
           roomId,
           userName: userName || "Anonymous",
         });
-        
+
         socketRef.current.on(ACTIONS.JOINED, ({ clients, userName }) => {
           console.log("Clients updated:", clients);
           if (userName && userName === location.state.userName) {
@@ -47,12 +59,14 @@ const EditorPage = () => {
           }
           setClients(clients);
         });
-  
+
         socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, userName }) => {
           toast.error(`${userName} has left the room!`);
-          setClients((prevClients) => prevClients.filter((client) => client.socketId !== socketId));
+          setClients((prevClients) =>
+            prevClients.filter((client) => client.socketId !== socketId)
+          );
         });
-        
+
         socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
           if (editorRef.current) {
             const currentValue = editorRef.current.getValue();
@@ -61,14 +75,13 @@ const EditorPage = () => {
             }
           }
         });
-        
       } catch (err) {
         console.error("Initialization error:", err);
         toast.error("An error occurred during socket initialization.");
       }
     };
     initSocket();
-    
+
     return () => {
       if (socketRef.current) {
         socketRef.current.disconnect();
@@ -101,15 +114,30 @@ const EditorPage = () => {
   };
 
   return (
-    <div className={`flex flex-col lg:flex-row h-screen overflow-hidden ${isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"}`}>
+    <div
+      className={`flex flex-col lg:flex-row h-screen overflow-hidden ${
+        isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"
+      }`}
+    >
       {/* Sidebar */}
-      <div className={`lg:w-1/4 w-full p-4 border-b lg:border-r lg:border-b-0 border-gray-300 lg:h-screen overflow-auto ${isDarkMode ? "bg-gray-800 border-gray-700" : "bg-gray-100 border-gray-300"}`}>
+      <div
+        className={`lg:w-1/4 w-full p-4 border-b lg:border-r lg:border-b-0 border-gray-300 lg:h-screen overflow-auto ${
+          isDarkMode
+            ? "bg-gray-800 border-gray-700"
+            : "bg-gray-100 border-gray-300"
+        }`}
+      >
         <h2 className="text-xl font-bold mb-4">Code Room Info</h2>
-        <p className="mb-2">Room ID: <span className="font-semibold">{roomId}</span></p>
+        <p className="mb-2">
+          Room ID: <span className="font-semibold">{roomId}</span>
+        </p>
 
         <div className="mt-4">
           <CopyToClipboard text={roomId}>
-            <Button onClick={() => toast.success("Room ID copied successfully!")} className="!mt-4 block w-full bg-emerald-500 text-white hover:bg-emerald-600 mb-5">
+            <Button
+              onClick={() => toast.success("Room ID copied successfully!")}
+              className="!mt-4 block w-full bg-emerald-500 text-white hover:bg-emerald-600 mb-5"
+            >
               Copy Room ID
             </Button>
           </CopyToClipboard>
@@ -121,9 +149,22 @@ const EditorPage = () => {
           <div className="flex items-center gap-4">
             <span>Light</span>
             <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only" checked={isDarkMode} onChange={toggleDarkMode} />
-              <div className={`w-11 h-6 bg-gray-200 rounded-full transition-colors ${isDarkMode ? "bg-blue-600" : "bg-gray-200"}`}></div>
-              <span className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${isDarkMode ? "translate-x-6" : "translate-x-1"}`}></span>
+              <input
+                type="checkbox"
+                className="sr-only"
+                checked={isDarkMode}
+                onChange={toggleDarkMode}
+              />
+              <div
+                className={`w-11 h-6 bg-gray-200 rounded-full transition-colors ${
+                  isDarkMode ? "bg-blue-600" : "bg-gray-200"
+                }`}
+              ></div>
+              <span
+                className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
+                  isDarkMode ? "translate-x-6" : "translate-x-1"
+                }`}
+              ></span>
             </label>
             <span>Dark</span>
           </div>
@@ -154,7 +195,9 @@ const EditorPage = () => {
           <Select className="w-full">
             <SelectAction>
               <div className="flex items-center gap-2.5">
-                <span><User className="h-4 w-4" /></span>
+                <span>
+                  <User className="h-4 w-4" />
+                </span>
                 <SelectValue placeholder="Check team members" />
               </div>
             </SelectAction>
@@ -162,7 +205,10 @@ const EditorPage = () => {
               <SelectGroup>
                 <SelectLabel>Member</SelectLabel>
                 {clients.map((client, index) => (
-                  <SelectItem key={index} value={client.username || "Anonymous"}>
+                  <SelectItem
+                    key={index}
+                    value={client.username || "Anonymous"}
+                  >
                     {client.username || "Anonymous"}
                   </SelectItem>
                 ))}
@@ -173,7 +219,10 @@ const EditorPage = () => {
 
         {/* Leave Room Button */}
         <div className="mt-6">
-          <Button onClick={handleLeaveRoom} className="!mt-4 block w-full bg-red-500 text-white hover:bg-red-600">
+          <Button
+            onClick={handleLeaveRoom}
+            className="!mt-4 block w-full bg-red-500 text-white hover:bg-red-600"
+          >
             Leave Room
           </Button>
         </div>
@@ -181,7 +230,11 @@ const EditorPage = () => {
 
       {/* Editor */}
       <div className="lg:w-3/4 w-full p-4 flex-1 lg:h-screen overflow-auto">
-        <Editor language={editorLanguage} isDarkMode={isDarkMode} onEditorChange={handleEditorChange} />
+        <Editor
+          language={editorLanguage}
+          isDarkMode={isDarkMode}
+          onEditorChange={handleEditorChange}
+        />
       </div>
     </div>
   );
