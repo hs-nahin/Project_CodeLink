@@ -27,7 +27,7 @@ const AboutPage = () => {
           </AccordionAction>
           <AccordionContent>
             <p className="text-lg leading-relaxed text-gray-700">
-              CodeLink is an innovative, real-time collaborative code editor designed to make coding projects more efficient and interactive for teams. Built using modern technologies like <strong>React.js</strong>, <strong>Node.js</strong>, and <strong>WebSockets</strong>, the platform enables seamless, instant synchronization of code changes among all participants, ensuring that everyone is always on the same page.
+              CodeLink is an innovative, real-time collaborative code editor designed to make coding projects more efficient and interactive for teams. Built using modern technologies like <strong>React.js</strong>, <strong>Node.js</strong>, and <strong>WebSockets</strong>, CodeLink ensures that code changes are instantly synchronized among all participants—keeping everyone on the same page.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -42,7 +42,7 @@ const AboutPage = () => {
           </AccordionAction>
           <AccordionContent>
             <p className="text-lg leading-relaxed text-gray-700">
-              Our mission is to empower developers, educators, and students by providing a tool that promotes real-time collaboration and learning. CodeLink helps streamline coding workflows, supports group projects, and allows educators to conduct coding lessons and pair programming exercises more effectively. It’s a platform where creativity, learning, and teamwork come together.
+              Our mission is to empower developers, educators, and students by providing a tool that promotes real-time collaboration and learning. CodeLink streamlines coding workflows, supports group projects, and enhances interactive teaching experiences—all in one platform.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -57,32 +57,50 @@ const AboutPage = () => {
           </AccordionAction>
           <AccordionContent>
             <ul className="list-disc list-inside text-lg text-gray-700">
-              <li><strong>Real-Time Collaboration:</strong> Multiple users can collaborate on the same codebase simultaneously, with instant updates reflecting in real-time across all participants&apos; screens.</li>
-              <li><strong>Interactive Code Editing:</strong> With features like syntax highlighting, autocompletion, and error-checking, SyncLipika offers a comfortable coding environment for all skill levels.</li>
-              <li><strong>Version Control Integration:</strong> Effortlessly integrate Git for version control, keeping track of changes made during collaborative sessions.</li>
-              <li><strong>Educational Use:</strong> Ideal for classrooms and group studies, SyncLipika helps students and educators work together effectively in a dynamic, real-time coding environment.</li>
-              <li><strong>Private and Public Sessions:</strong> Create private coding sessions for team projects or open sessions for public collaboration, giving you control over your workspace.</li>
-              <li><strong>Secure and Reliable:</strong> SyncLipika leverages WebSockets for real-time communication, ensuring low-latency and secure collaboration, with automatic conflict resolution.</li>
+              <li>
+                <strong>Real-Time Collaboration:</strong> Multiple users can work on the same codebase simultaneously, with changes updated instantly on every screen.
+              </li>
+              <li>
+                <strong>Interactive Code Editing:</strong> Enjoy syntax highlighting, autocompletion, and error detection that provide a comfortable and efficient coding environment.
+              </li>
+              <li>
+                <strong>Version Control Integration:</strong> Seamlessly integrate with Git to track changes during collaborative sessions.
+              </li>
+              <li>
+                <strong>Educational Use:</strong> Ideal for classrooms and group studies, CodeLink enables effective collaboration between students and educators.
+              </li>
+              <li>
+                <strong>Private and Public Sessions:</strong> Create private coding sessions for your team projects or open sessions for wider collaboration, giving you full control over your workspace.
+              </li>
+              <li>
+                <strong>Secure and Reliable:</strong> Leveraging WebSockets for real-time communication ensures low latency and secure, automatic conflict resolution.
+              </li>
             </ul>
           </AccordionContent>
         </AccordionItem>
 
-        {/* Why Choose SyncLipika Section */}
+        {/* Why Choose CodeLink Section */}
         <AccordionItem value="why-choose">
           <AccordionAction>
             <AccordionTitle className="first-letter:text-emerald-500">
-              Why Choose SyncLipika?
+              Why Choose CodeLink?
             </AccordionTitle>
             <AccordionIcon />
           </AccordionAction>
           <AccordionContent>
             <p className="text-lg leading-relaxed text-gray-700">
-              SyncLipika offers a unique environment where developers, educators, and students can collaborate and work together on coding projects, all within a single platform. Whether you are building software, learning a new programming language, or teaching others, SyncLipika provides a seamless and efficient experience that enhances productivity and fosters creative teamwork.
+              CodeLink provides a straightforward and efficient environment for collaborative coding. Whether you are developing software, learning a new language, or teaching programming, CodeLink offers a seamless experience that improves productivity and fosters teamwork.
             </p>
-            <ul className="list-disc list-inside text-lg text-gray-700">
-              <li><strong>Improve Productivity:</strong> Say goodbye to the hassle of merging code changes manually. With real-time syncing, everyone can work simultaneously without disrupting others.</li>
-              <li><strong>Promote Learning:</strong> Students and educators can use the platform to work together on projects, facilitating peer-to-peer learning and effective teaching.</li>
-              <li><strong>Enhance Teamwork:</strong> Collaborative coding promotes idea sharing, problem-solving, and quicker results.</li>
+            <ul className="list-disc list-inside text-lg text-gray-700 mt-4">
+              <li>
+                <strong>Boost Productivity:</strong> Eliminate the hassle of manual code merging—work in real-time and see updates immediately.
+              </li>
+              <li>
+                <strong>Enhance Learning:</strong> Collaborate easily with peers and mentors, making it an ideal tool for educational settings.
+              </li>
+              <li>
+                <strong>Simplify Collaboration:</strong> CodeLink’s intuitive interface helps teams share ideas, solve problems, and produce results faster.
+              </li>
             </ul>
           </AccordionContent>
         </AccordionItem>
@@ -97,10 +115,15 @@ const AboutPage = () => {
           </AccordionAction>
           <AccordionContent>
             <ul className="list-disc list-inside text-lg text-gray-700">
-              <li><strong>React.js:</strong> A JavaScript library for building user interfaces, providing the fast, interactive experience SyncLipika users enjoy.</li>
-              <li><strong>Node.js:</strong> A powerful JavaScript runtime for building scalable backend services, ensuring smooth performance and real-time communication.</li>
-              <li><strong>WebSockets:</strong> This protocol powers our real-time collaboration feature, ensuring low-latency communication between users.</li>
-              <li><strong>MongoDB:</strong> Used for storing session data, user preferences, and other platform-related information.</li>
+              <li>
+                <strong>React.js:</strong> A JavaScript library for building dynamic user interfaces that deliver a fast and interactive experience.
+              </li>
+              <li>
+                <strong>Node.js:</strong> A robust JavaScript runtime that powers scalable backend services and real-time communication.
+              </li>
+              <li>
+                <strong>WebSockets:</strong> Enables low-latency, real-time communication for seamless collaborative coding.
+              </li>
             </ul>
           </AccordionContent>
         </AccordionItem>
@@ -115,13 +138,21 @@ const AboutPage = () => {
           </AccordionAction>
           <AccordionContent>
             <p className="text-lg leading-relaxed text-gray-700">
-              While SyncLipika already provides an intuitive and reliable collaborative coding environment, we have ambitious plans for future enhancements:
+              CodeLink is continuously evolving. Our near-term focus is on enhancing the collaborative experience with achievable improvements:
             </p>
-            <ul className="list-disc list-inside text-lg text-gray-700">
-              <li><strong>Integration with More Code Hosting Platforms:</strong> Expanding support for repositories like GitHub, GitLab, and Bitbucket for better version control and repository management.</li>
-              <li><strong>Advanced Collaborative Features:</strong> Adding features like live debugging, code suggestions, and real-time chat to further improve the collaborative experience.</li>
-              <li><strong>Mobile App Support:</strong> Developing mobile apps for on-the-go coding collaboration.</li>
-              <li><strong>Community & Open Source:</strong> SyncLipika is committed to fostering a community of developers and educators. We plan to open-source parts of our platform to encourage contributions from the developer community.</li>
+            <ul className="list-disc list-inside text-lg text-gray-700 mt-4">
+              <li>
+                <strong>Enhanced Editor Features:</strong> Improving syntax highlighting, autocompletion, and error detection to further streamline coding.
+              </li>
+              <li>
+                <strong>Performance Optimizations:</strong> Reducing latency and increasing the responsiveness of real-time collaboration.
+              </li>
+              <li>
+                <strong>User Interface Improvements:</strong> Refining the overall design to make CodeLink even more intuitive and user-friendly.
+              </li>
+              <li>
+                <strong>User Feedback Integration:</strong> Continuously gathering and incorporating user feedback to guide our development priorities.
+              </li>
             </ul>
           </AccordionContent>
         </AccordionItem>
@@ -130,13 +161,13 @@ const AboutPage = () => {
         <AccordionItem value="cta">
           <AccordionAction>
             <AccordionTitle className="first-letter:text-emerald-500">
-              Get Started with SyncLipika
+              Get Started with CodeLink
             </AccordionTitle>
             <AccordionIcon />
           </AccordionAction>
           <AccordionContent className="text-center mt-8">
             <p className="text-lg text-gray-700 mb-4">
-              Whether you&apos;re a developer looking to improve your team’s workflow, an educator aiming to create engaging lessons, or a student collaborating on a group project, <strong>SyncLipika</strong> is the perfect solution for you.
+              Whether you’re a developer, educator, or student, <strong>CodeLink</strong> offers a practical and efficient solution for real-time collaborative coding.
             </p>
             <button className="bg-emerald-500 text-white px-6 py-3 rounded-full hover:bg-emerald-600 transition duration-300 ease-in-out">
               Start Collaborating Today
