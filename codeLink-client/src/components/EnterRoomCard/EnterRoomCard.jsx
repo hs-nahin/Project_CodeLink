@@ -62,7 +62,7 @@ export const EnterRoomCard = () => {
             <CardTitle className="text-center">
               Enter the{" "}
               <span className="bg-gradient-to-r from-green-400 to-green-500 text-transparent bg-clip-text">
-                CodeLink
+              <span className="text-gray-600">Code</span><span className="bg-gradient-to-r from-green-400 to-green-500 text-transparent bg-clip-text">Link</span>
               </span>{" "}
               Room
             </CardTitle>

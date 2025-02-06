@@ -9,7 +9,7 @@ import {
 } from "keep-react";
 import "react";
 import { Link } from "react-router";
-import KeepLogo from "../../assets/logo.png";
+// import KeepLogo from "../../assets/logo.png";
 
 const NavbarComponent = () => {
   return (
@@ -17,7 +17,8 @@ const NavbarComponent = () => {
       <NavbarContainer>
         <NavbarBrand className="cursor-pointer">
           <Link to="/">
-            <img src={KeepLogo} alt="Keep" width="88" height="40" />
+            {/* <img src={KeepLogo} alt="Keep" width="88" height="40" /> */}
+            <h1 className="font-mono text-2xl ml-10 font-semibold"> <span className="text-gray-600">Code</span><span className="bg-gradient-to-r from-green-400 to-green-500 text-transparent bg-clip-text">Link</span></h1>
           </Link>
         </NavbarBrand>
 
