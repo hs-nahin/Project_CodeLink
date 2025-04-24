@@ -22,13 +22,18 @@ const EditorPage = () => {
   const editorRef = useRef(null); // Will store the Monaco Editor instance
   const location = useLocation();
   const { roomId } = useParams();
-  const reactNavigator = useNavigate();
+  const navigate = useNavigate();
   const [clients, setClients] = useState([]);
   const { userName } = location.state || { userName: "Anonymous" };
 
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [editorLanguage, setEditorLanguage] = useState("javascript");
+  const [output, setOutput] = useState(""); // To store the output
+  const [, setCode] = useState(""); // To store the code
+
   if (!userName) {
     toast.error("Username is required to join the room!");
-    reactNavigator("/");
+    navigate("/");
   }
 
   useEffect(() => {
@@ -43,7 +48,7 @@ const EditorPage = () => {
       function handleError(err) {
         console.error("Socket connection failed:", err);
         toast.error("Failed to connect to the server. Please try again later.");
-        reactNavigator("/");
+        navigate("/");
       }
 
       // Emit the JOIN action to join the room
@@ -119,26 +124,18 @@ const EditorPage = () => {
         socketRef.current = null;
       }
     };
-  }, [location.state, reactNavigator, roomId, userName]);
-
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [editorLanguage, setEditorLanguage] = useState("javascript");
-
-  if (!location.state) {
-    return <Navigate to="/" />;
-  }
+  }, [location.state, navigate, roomId, userName]);
 
   // Handle local code changes: update the editor and emit changes to others.
-  // eslint-disable-next-line no-unused-vars
-  const handleEditorChange = (value, event) => {
+  const handleEditorChange = (value) => {
+    setCode(value);
     if (socketRef.current) {
       socketRef.current.emit(ACTIONS.CODE_CHANGE, { roomId, code: value });
     }
   };
 
   // After the editor mounts, store its instance and request code sync from an existing client.
-  // eslint-disable-next-line no-unused-vars
-  const handleEditorDidMount = (editor, monaco) => {
+  const handleEditorDidMount = (editor) => {
     editorRef.current = editor;
     if (socketRef.current) {
       socketRef.current.emit(ACTIONS.REQUEST_SYNC, { roomId });
@@ -146,7 +143,6 @@ const EditorPage = () => {
   };
 
   const handleLanguageChange = (language) => {
-    console.log("Selected Language:", language);
     setEditorLanguage(language);
   };
 
@@ -159,7 +155,7 @@ const EditorPage = () => {
       setTimeout(() => {
         socketRef.current.disconnect();
         socketRef.current = null;
-        reactNavigator("/");
+        navigate("/");
       }, 100);
 
       // Option 2: Alternatively, you can omit an immediate disconnect.
@@ -169,9 +165,36 @@ const EditorPage = () => {
     toast.success("You have left the room!");
   };
 
+  // Handle the "Run Code" button click
+  const handleRunCode = async () => {
+    if (editorRef.current) {
+      const code = editorRef.current.getValue();
+      try {
+        const response = await fetch("http://localhost:5000/run", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            language: editorLanguage,
+            code: code,
+          }),
+        });
+
+        const result = await response.json();
+        setOutput(result.output); // Display the result
+      } catch (error) {
+        setOutput("Error running the code.");
+        console.error("Error running the code:", error);
+      }
+    }
+  };
+
   const toggleDarkMode = () => {
     setIsDarkMode((prevMode) => !prevMode);
   };
+
+  if (!location.state) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div
@@ -287,22 +310,36 @@ const EditorPage = () => {
             Leave Room
           </Button>
         </div>
+
+        {/* Run Code Button */}
+        <div className="mt-4 flex justify-end">
+          <Button
+            onClick={handleRunCode}
+            className="bg-blue-600 text-white hover:bg-blue-700"
+          >
+            Run Code
+          </Button>
+        </div>
       </div>
 
       {/* Editor */}
       <div className="lg:w-3/4 w-full p-4 flex-1 lg:h-screen overflow-auto">
         <Editor
-          height="100%"
+          height="80%"
           language={editorLanguage}
           defaultValue="// start coding here"
           theme={isDarkMode ? "vs-dark" : "light"}
           onChange={handleEditorChange}
           onMount={handleEditorDidMount}
-          options={{
-            minimap: { enabled: false },
-            fontSize: 14,
-          }}
         />
+
+        {/* Output Section */}
+        {output && (
+          <div className="mt-4 p-4 border-none rounded-md bg-gray-400">
+            <h3 className="text-lg font-semibold">Output:</h3>
+            <pre className="whitespace-pre-wrap">{output}</pre>
+          </div>
+        )}
       </div>
     </div>
   );
