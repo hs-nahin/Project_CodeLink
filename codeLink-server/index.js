@@ -4,7 +4,7 @@ import express from "express";
 import fs from "fs";
 import http from "http";
 import { Server } from "socket.io";
-import ACTIONS from "../codeLink-client/src/Actions/Actions.js";
+import ACTIONS from "../Actions/Actions.js";
 
 const app = express();
 const server = http.createServer(app);

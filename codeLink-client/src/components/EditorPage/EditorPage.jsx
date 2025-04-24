@@ -14,7 +14,8 @@ import { User } from "phosphor-react";
 import { useEffect, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
-import ACTIONS from "../../Actions/Actions";
+import ACTIONS from "../../../../Actions/Actions.js";
+
 import { initSocket } from "../../Socket/Socket";
 
 const EditorPage = () => {
