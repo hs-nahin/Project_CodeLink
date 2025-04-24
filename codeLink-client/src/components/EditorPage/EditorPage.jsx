@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import ACTIONS from "../../Actions/Actions";
-import { initSocket } from "../../Socket/socket";
+import { initSocket } from "../../Socket/Socket";
 
 const EditorPage = () => {
   const socketRef = useRef(null);
