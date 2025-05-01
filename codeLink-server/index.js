@@ -63,21 +63,21 @@ app.post("/run", (req, res) => {
     });
   }
 
-  else if (language === "java") {
-    const filename = "Temp.java";
-    fs.writeFileSync(filename, code);
+  // else if (language === "java") {
+  //   const filename = "Temp.java";
+  //   fs.writeFileSync(filename, code);
 
-    exec(`javac ${filename}`, (error, stdout, stderr) => {
-      if (error) return res.json({ output: `Error: ${error.message}` });
-      if (stderr) return res.json({ output: `stderr: ${stderr}` });
+  //   exec(`javac ${filename}`, (error, stdout, stderr) => {
+  //     if (error) return res.json({ output: `Error: ${error.message}` });
+  //     if (stderr) return res.json({ output: `stderr: ${stderr}` });
 
-      exec(`java Temp`, (runError, runStdout, runStderr) => {
-        if (runError) return res.json({ output: `Error: ${runError.message}` });
-        if (runStderr) return res.json({ output: `stderr: ${runStderr}` });
-        res.json({ output: runStdout.trim() });
-      });
-    });
-  }
+  //     exec(`java Temp`, (runError, runStdout, runStderr) => {
+  //       if (runError) return res.json({ output: `Error: ${runError.message}` });
+  //       if (runStderr) return res.json({ output: `stderr: ${runStderr}` });
+  //       res.json({ output: runStdout.trim() });
+  //     });
+  //   });
+  // }
 
   else {
     res.json({ output: "Unsupported language" });
