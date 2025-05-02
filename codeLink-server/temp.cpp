@@ -2,8 +2,9 @@
 using namespace std;
 
 int main() {
-    int a = 5;
-    int b = 55;
-    cout << a + b << " " << "eta c++ etao kaj hocche" << endl;
+    int a = 55;
+    int b = 555;
+    int result = a + b;
+    cout << result << endl;
     return 0;
 }

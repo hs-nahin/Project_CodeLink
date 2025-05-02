@@ -29,7 +29,7 @@ export const AccordionComponent = () => {
             <AccordionIcon />
           </AccordionAction>
           <AccordionContent>
-            We support syntax highlighting for over 4 programming languages including JavaScript, Python, Java, C++. New languages are added regularly based on user requests.
+            We support syntax highlighting for over 3 programming languages including JavaScript, Python, and C++. New languages are added regularly based on user requests.
           </AccordionContent>
         </AccordionItem>
       </Accordion>
