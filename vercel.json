@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "codeLink-client/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    },
+    {
+      "src": "codeLink-server/api/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "codeLink-server/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "codeLink-client/$1"
+    }
+  ]
+}
