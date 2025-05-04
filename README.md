@@ -1,6 +1,3 @@
-Here is your modified `README.md` file wrapped inside a single code block for use in a GitHub repository:
-
-````markdown
 # **CodeLink**
 
 ### **Tagline:** Seamless Collaboration, Real-Time Creation
@@ -56,7 +53,6 @@ Follow these steps to set up CodeLink locally:
    git clone https://github.com/your-username/CodeLink.git
    cd CodeLink
    ```
-````
 
 2. **Install dependencies:**
 
