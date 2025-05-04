@@ -1,4 +1,7 @@
-# CodeLink
+Here is your modified `README.md` file wrapped inside a single code block for use in a GitHub repository:
+
+````markdown
+# **CodeLink**
 
 ### **Tagline:** Seamless Collaboration, Real-Time Creation
 
@@ -6,24 +9,24 @@
 
 ## **Project Description**
 
-**CodeLink** is a real-time collaborative code editor built with **React.js**, **Node.js**, and **WebSockets**. It enables users to collaborate on coding projects in real time, providing seamless synchronization to boost productivity for developers, educators, and students. The name "CodeLink" reflects its purpose of fostering effortless collaboration and creative teamwork.
+**CodeLink** is a real-time collaborative code editor built using **React.js**, **Node.js**, and **WebSockets**. The platform empowers users to collaborate on code in real time, enabling seamless synchronization and boosting productivity for developers, educators, and students. The name "CodeLink" reflects its goal of fostering effortless collaboration and creative teamwork.
 
 ---
 
 ## **Features**
 
-- **Real-Time Collaboration**: Instant code updates with WebSocket-powered synchronization for smooth collaboration.
-- **Syntax Highlighting**: Supports multiple programming languages to enhance code readability and ease of use.
-- **Secure User Authentication**: Unique ID-based login system for secure and exclusive collaboration sessions.
-- **Responsive Design**: Fully functional across all devices and screen sizes for easy access on any platform.
+- **Real-Time Collaboration**: Instant updates to code changes with WebSocket-powered synchronization.
+- **Syntax Highlighting**: Support for multiple programming languages to enhance readability.
+- **Unique ID generated User LogIn for each use**: Secure login system for private and exclusive collaboration.
+- **Responsive Design**: Fully functional across various devices and screen sizes.
 
-### **Planned Enhancements**
+### **Future Enhancements**
 
-- Git integration for version control.
-- Real-time team chat functionality for seamless communication.
-- AI-driven code completion and error detection.
-- **Role Management**: Assign roles such as "Editor" or "Viewer" to manage access and permissions.
-- **Session Persistence**: Easily save and reload coding sessions to pick up where you left off.
+- Integration with version control systems like Git.
+- Real-time chat functionality for team communication.
+- AI-powered code completion and error detection.
+- **Role Management**: Assign roles like "Editor" or "Viewer" for controlled access.
+- **Session Persistence**: Save and reload coding sessions with ease.
 
 ---
 
@@ -32,42 +35,107 @@
 - **Frontend**: React.js, Tailwind CSS
 - **Backend**: Node.js, Express.js
 - **Real-Time Communication**: WebSockets
-- **UI Component Library**: Keep React Component Library
+- **UI Component**: Keep React Component Library
 
 ---
 
 ## **Setup and Installation**
 
-To set up CodeLink locally, follow the steps below:
+Follow these steps to set up CodeLink locally:
 
 ### **Prerequisites**
 
-Make sure you have the following installed:
+- Node.js and npm installed.
+- Nodemon running
 
-- Node.js
-- npm
-- Nodemon (for development)
+### **Steps**
 
-### **Installation Steps**
-
-1. **Clone the repository**:
+1. **Clone the repository:**
 
    ```bash
    git clone https://github.com/your-username/CodeLink.git
    cd CodeLink
    ```
+````
 
-## Folder Structure
+2. **Install dependencies:**
 
-The project structure is as follows:
+   ```bash
+   cd client
+   npm install
+   cd ../server
+   npm install
+   ```
+
+3. **Set up environment variables:**
+
+   - Create a `.env` file in the `server` directory.
+   - Add the following:
+
+     ```env
+     PORT=5000
+     MONGO_URI=your_mongodb_connection_string
+     JWT_SECRET=your_jwt_secret
+     ```
+
+4. **Run the application:**
+
+   - Start the backend server:
+
+     ```bash
+     cd server
+     npm start
+     ```
+
+   - Start the frontend:
+
+     ```bash
+     cd client
+     npm start
+     ```
+
+5. **Access the application:**
+   Open your browser and navigate to `http://localhost:3000`.
+
+---
+
+## **Folder Structure**
+
+```
 CodeLink/
-├── client/ # Frontend React application
-│ ├── src/ # Source code for React components
-│ ├── public/ # Public assets (images, index.html, etc.)
-│ └── package.json # Frontend dependencies and configurations
-├── server/ # Backend Node.js application
-│ ├── index.js # Main server file
-│ └── package.json # Backend dependencies and configurations
+├── client/             # Frontend React application
+│   ├── src/            # Source code for React components
+│   ├── public/         # Public assets (images, index.html, etc.)
+│   └── package.json    # Frontend dependencies and configurations
+├── server/             # Backend Node.js application
+│   ├── index.js       # Main server file
+│   └── package.json    # Backend dependencies and configurations
 └── Actions/
-├── Actions.js # Shared logic for both frontend and backend
-└── README.md # Project documentation
+    ├── Actions.js      # Shared logic for both frontend and backend
+└── README.md           # Project documentation
+```
+
+---
+
+## **Contributing**
+
+We welcome contributions! To contribute:
+
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature/your-feature-name`.
+3. Commit your changes: `git commit -m 'Add your feature description'`.
+4. Push to the branch: `git push origin feature/your-feature-name`.
+5. Open a pull request.
+
+---
+
+## **Contact**
+
+For queries or suggestions, feel free to contact us:
+
+- **Email**: [hs.nahin430@gmail.com](mailto:hs.nahin430@gmail.com)
+- **GitHub**: [hs-nahin](https://github.com/hs-nahin)
+
+---
+
+Happy Coding! ✨
